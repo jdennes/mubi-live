@@ -3,7 +3,7 @@ name: check
 on:
   # Check https://mubi.com/live for the currently playing film every two minutes
   schedule:
-    - cron: "*/2 * * * *"
+    - cron: "*/5 * * * *"
 
 jobs:
   scheduled:
