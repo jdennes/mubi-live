@@ -1,0 +1,19 @@
+name: check
+
+on:
+  # Check https://mubi.com/live for the currently playing film every two minutes
+  schedule:
+    - cron: "*/2 * * * *"
+
+jobs:
+  scheduled:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@v2
+
+      - name: Get a blob representing the currently streaming film at https://mubi.com/live
+        uses: githubocto/flat@v3
+        with:
+          http_url: https://mubi.com/live.json
+          downloaded_filename: live.json
