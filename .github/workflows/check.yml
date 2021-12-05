@@ -14,9 +14,9 @@ jobs:
       - name: Check out the repository
         uses: actions/checkout@v2
 
-      - name: Extract current film data
+      - name: Extract current film URL
         id: extract_before
-        run: echo ::set-output name=title::$(jq .title film.json)
+        run: echo ::set-output name=web_url::$(jq .web_url film.json)
 
       - name: Setup deno
         uses: denoland/setup-deno@main
