@@ -1,5 +1,5 @@
 ---
-title: {{ env.TITLE }} is now showing at https://mubi.com/live
+title: '{{ env.TITLE }} is now showing at https://mubi.com/live'
 ---
 {{ env.TITLE }} is now showing at https://mubi.com/live
 
