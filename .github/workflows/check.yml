@@ -32,13 +32,24 @@ jobs:
 
       - name: Extract updated film data
         id: extract_after
-        run: echo ::set-output name=title::$(jq .title film.json)
+        run: |
+          echo ::set-output name=title::$(jq .title film.json)
+          echo ::set-output name=year::$(jq .year film.json)
+          echo ::set-output name=country::$(jq .country film.json)
+          echo ::set-output name=directors::$(jq .directors film.json)
+          echo ::set-output name=web_url::$(jq .web_url film.json)
+          echo ::set-output name=excerpt::$(jq .excerpt film.json)
 
-      - name: Repository dispatch
-        if: ${{ steps.extract_before.outputs.title != steps.extract_after.outputs.title }}
-        uses: peter-evans/repository-dispatch@v1
+      - name: Notify via an issue if a new film is streaming
+        if: ${{ steps.extract_before.outputs.web_url != steps.extract_after.outputs.web_url }}
+        uses: JasonEtco/create-an-issue@v2
         with:
-          token: ${{ secrets.PAT }}
-          repository: jdennes/mubi-live
-          event-type: new-film-streaming
-          client-payload: '{}'
+          filename: .github/ISSUE_TEMPLATE/new-film.md
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TITLE: ${{ steps.extract_after.outputs.title }}
+          YEAR: ${{ steps.extract_after.outputs.year }}
+          COUNTRY: ${{ steps.extract_after.outputs.country }}
+          DIRECTORS: ${{ steps.extract_after.outputs.directors }}
+          WEB_URL: ${{ steps.extract_after.outputs.web_url }}
+          EXCERPT: ${{ steps.extract_after.outputs.excerpt }}
