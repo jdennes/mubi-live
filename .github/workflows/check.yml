@@ -1,7 +1,7 @@
 name: check
 
 on:
-  # Check https://mubi.com/live for the currently playing film every two minutes
+  # Check https://mubi.com/live for the currently playing film every five minutes
   schedule:
     - cron: "*/5 * * * *"
 
