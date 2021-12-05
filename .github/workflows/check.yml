@@ -11,6 +11,8 @@ jobs:
     steps:
       - name: Check out the repository
         uses: actions/checkout@v2
+        with:
+          persist-credentials: false
 
       - name: Setup deno
         uses: denoland/setup-deno@main
@@ -19,6 +21,8 @@ jobs:
 
       - name: Get a blob representing the currently streaming film at https://mubi.com/live
         uses: githubocto/flat@v3
+        env:
+          GITHUB_TOKEN: ${{ secrets.PAT }}
         with:
           http_url: https://mubi.com/live.json
           downloaded_filename: live.json
