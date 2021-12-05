@@ -18,7 +18,21 @@ jobs:
       
       - name: Extract film data
         id: extract
-        run: echo ::set-output name=title::$(jq .title film.json)
+        run: |
+          echo ::set-output name=title::$(jq .title film.json)
+          echo ::set-output name=year::$(jq .year film.json)
+          echo ::set-output name=country::$(jq .country film.json)
+          echo ::set-output name=directors::$(jq .directors film.json)
+          echo ::set-output name=web_url::$(jq .web_url film.json)
+          echo ::set-output name=excerpt::$(jq .excerpt film.json)
 
-      - name: Test output
-        run: echo ${{ steps.extract.outputs.title }}
+      - name: Notify via a new issue
+        uses: JasonEtco/create-an-issue@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TITLE: ${{ steps.extract.outputs.title }}
+          YEAR: ${{ steps.extract.outputs.year }}
+          COUNTRY: ${{ steps.extract.outputs.country }}
+          DIRECTORS: ${{ steps.extract.outputs.directors }}
+          WEB_URL: ${{ steps.extract.outputs.web_url }}
+          EXCERPT: ${{ steps.extract.outputs.excerpt }}
