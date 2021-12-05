@@ -13,9 +13,10 @@ jobs:
     steps:
       - name: Check out the repository
         uses: actions/checkout@v2
-        with:
-          token: ${{ secrets.PAT }}
-          persist-credentials: false
+
+      - name: Extract current film data
+        id: extract_before
+        run: echo ::set-output name=title::$(jq .title film.json)
 
       - name: Setup deno
         uses: denoland/setup-deno@main
@@ -28,3 +29,16 @@ jobs:
           http_url: https://mubi.com/live.json
           downloaded_filename: live.json
           postprocess: postprocess.ts
+
+      - name: Extract updated film data
+        id: extract_after
+        run: echo ::set-output name=title::$(jq .title film.json)
+
+      - name: Repository dispatch
+        if: ${{ steps.extract_before.outputs.title != steps.extract_after.outputs.title }}
+        uses: peter-evans/repository-dispatch@v1
+        with:
+          token: ${{ secrets.PAT }}
+          repository: jdennes/mubi-live
+          event-type: new-film-streaming
+          client-payload: '{}'

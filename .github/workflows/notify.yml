@@ -1,10 +1,8 @@
 name: notify
 
 on:
-  push:
-    branches: [ main ]
-    paths:
-      - film.json # Only notify when film.json changes
+  repository_dispatch:
+    types: [new-film-streaming]
 
   workflow_dispatch:
 
