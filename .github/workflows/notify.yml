@@ -28,6 +28,8 @@ jobs:
 
       - name: Notify via a new issue
         uses: JasonEtco/create-an-issue@v2
+        with:
+          filename: .github/ISSUE_TEMPLATE/new-film.md
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           TITLE: ${{ steps.extract.outputs.title }}
