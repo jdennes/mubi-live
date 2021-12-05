@@ -12,8 +12,14 @@ jobs:
       - name: Check out the repository
         uses: actions/checkout@v2
 
+      - name: Setup deno
+        uses: denoland/setup-deno@main
+        with:
+          deno-version: v1.x
+
       - name: Get a blob representing the currently streaming film at https://mubi.com/live
         uses: githubocto/flat@v3
         with:
           http_url: https://mubi.com/live.json
           downloaded_filename: live.json
+          postprocess: postprocess.ts
