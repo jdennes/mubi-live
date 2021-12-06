@@ -16,7 +16,7 @@ jobs:
 
       - name: Extract current film URL
         id: extract_before
-        run: echo ::set-output name=web_url::$(jq .web_url film.json)
+        run: echo ::set-output name=web_url::$(jq -r .web_url film.json)
 
       - name: Setup deno
         uses: denoland/setup-deno@main
@@ -33,12 +33,12 @@ jobs:
       - name: Extract updated film data
         id: extract_after
         run: |
-          echo ::set-output name=title::$(jq .title film.json)
-          echo ::set-output name=year::$(jq .year film.json)
-          echo ::set-output name=country::$(jq .country film.json)
-          echo ::set-output name=directors::$(jq .directors film.json)
-          echo ::set-output name=web_url::$(jq .web_url film.json)
-          echo ::set-output name=excerpt::$(jq .excerpt film.json)
+          echo ::set-output name=title::$(jq -r .title film.json)
+          echo ::set-output name=year::$(jq -r .year film.json)
+          echo ::set-output name=country::$(jq -r .country film.json)
+          echo ::set-output name=directors::$(jq -r .directors film.json)
+          echo ::set-output name=web_url::$(jq -r .web_url film.json)
+          echo ::set-output name=excerpt::$(jq -r .excerpt film.json)
 
       - name: Notify via an issue if a new film is streaming
         if: ${{ steps.extract_before.outputs.web_url != steps.extract_after.outputs.web_url }}
